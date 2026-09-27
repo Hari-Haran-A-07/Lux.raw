@@ -7,6 +7,8 @@ import { ArrowLeft, Clock, User, Share2, Tag } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 
+import { seedEditorials } from "@/lib/seed-data";
+
 export const revalidate = 60;
 
 export async function generateMetadata({
@@ -14,9 +16,18 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const story = await prisma.editorial.findUnique({
-    where: { slug: params.slug },
-  });
+  let story: any = null;
+  try {
+    story = await prisma.editorial.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch {
+    story = seedEditorials.find((s) => s.slug === params.slug);
+  }
+
+  if (!story) {
+    story = seedEditorials.find((s) => s.slug === params.slug);
+  }
 
   if (!story) return { title: "Story Not Found — luxury.Raw" };
 
@@ -26,7 +37,7 @@ export async function generateMetadata({
     openGraph: {
       title: story.title,
       description: story.excerpt,
-      images: [{ url: story.heroImage, width: 1200, height: 630 }],
+      images: [{ url: story.heroImage || story.coverImage, width: 1200, height: 630 }],
     },
   };
 }
@@ -36,19 +47,39 @@ export default async function StoryDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const story = await prisma.editorial.findUnique({
-    where: { slug: params.slug },
-  });
+  let story: any = null;
+  let otherStories: any[] = [];
+
+  try {
+    story = await prisma.editorial.findUnique({
+      where: { slug: params.slug },
+    });
+
+    if (story) {
+      otherStories = await prisma.editorial.findMany({
+        where: { id: { not: story.id } },
+        take: 3,
+        orderBy: { publishedAt: "desc" },
+      });
+    }
+  } catch (error) {
+    console.warn("Prisma journal detail fallback:", error);
+  }
+
+  if (!story) {
+    const seed = seedEditorials.find((s) => s.slug === params.slug);
+    if (seed) {
+      story = { ...seed, id: `seed-story-${seed.slug}`, publishedAt: new Date().toISOString() };
+      otherStories = seedEditorials
+        .filter((s) => s.slug !== params.slug)
+        .slice(0, 3)
+        .map((s, idx) => ({ ...s, id: `seed-other-${idx}`, publishedAt: new Date().toISOString() }));
+    }
+  }
 
   if (!story) {
     notFound();
   }
-
-  const otherStories = await prisma.editorial.findMany({
-    where: { id: { not: story.id } },
-    take: 3,
-    orderBy: { publishedAt: "desc" },
-  });
 
   return (
     <article className="bg-[#09090b] text-[#f4f3ef] pt-32 sm:pt-40 pb-24">
@@ -100,7 +131,7 @@ export default async function StoryDetailPage({
 
         {/* Content Body with Typography formatting */}
         <div className="prose prose-invert prose-stone max-w-none text-[#d4d4d8] leading-relaxed text-sm sm:text-base space-y-6 font-light">
-          {story.content.split("\n\n").map((block, idx) => {
+          {(story.content as string).split("\n\n").map((block: string, idx: number) => {
             if (block.startsWith("# ")) {
               return (
                 <h2
@@ -139,7 +170,7 @@ export default async function StoryDetailPage({
         <div className="mt-12 pt-6 border-t border-[#27272a] flex flex-wrap items-center gap-2 text-xs text-[#71717a]">
           <Tag className="w-3.5 h-3.5 text-[#b59a6d]" />
           <span>INDEXED THEMES:</span>
-          {story.tags.split(",").map((t) => (
+          {((story.tags as string) || "").split(",").map((t: string) => (
             <span
               key={t}
               className="bg-[#141416] border border-[#27272a] px-3 py-1 text-[11px] text-[#a1a1aa]"

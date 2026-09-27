@@ -4,11 +4,15 @@ import { ProductCard } from "@/components/product/ProductCard";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
+import { seedProducts, seedCategories } from "@/lib/seed-data";
+
 export const revalidate = 0; // Dynamic search
 
 async function SearchResults({ query }: { query: string }) {
-  const products = query
-    ? await prisma.product.findMany({
+  let products: any[] = [];
+  if (query) {
+    try {
+      products = await prisma.product.findMany({
         where: {
           status: "ACTIVE",
           OR: [
@@ -24,8 +28,25 @@ async function SearchResults({ query }: { query: string }) {
           variants: true,
           images: { orderBy: { order: "asc" } },
         },
-      })
-    : [];
+      });
+    } catch (error) {
+      console.warn("Prisma search fallback:", error);
+      products = seedProducts
+        .filter(
+          (p) =>
+            p.name.toLowerCase().includes(query.toLowerCase()) ||
+            p.description.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((p, idx) => ({
+          ...p,
+          id: `seed-search-${idx}`,
+          images: p.images.map((img, i) => ({ id: `img-s-${idx}-${i}`, url: img, isPrimary: i === 0 })),
+          variants: [],
+          category: seedCategories.find((c) => c.slug === p.categorySlug) || null,
+          collection: null,
+        }));
+    }
+  }
 
   return (
     <div className="bg-[#09090b] text-[#f4f3ef] pt-32 sm:pt-40 pb-24 min-h-[85vh]">
