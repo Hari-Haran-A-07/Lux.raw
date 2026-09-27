@@ -1,14 +1,30 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 
+import { seedProducts, seedCollections, seedEditorials } from "@/lib/seed-data";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://luxuryraw.com";
 
-  const [products, collections, stories] = await Promise.all([
-    prisma.product.findMany({ where: { status: "ACTIVE" }, select: { slug: true, updatedAt: true } }),
-    prisma.collection.findMany({ select: { slug: true, updatedAt: true } }),
-    prisma.editorial.findMany({ select: { slug: true, updatedAt: true } }),
-  ]);
+  let products: { slug: string; updatedAt?: Date }[] = [];
+  let collections: { slug: string; updatedAt?: Date }[] = [];
+  let stories: { slug: string; updatedAt?: Date }[] = [];
+
+  try {
+    const res = await Promise.all([
+      prisma.product.findMany({ where: { status: "ACTIVE" }, select: { slug: true, updatedAt: true } }),
+      prisma.collection.findMany({ select: { slug: true, updatedAt: true } }),
+      prisma.editorial.findMany({ select: { slug: true, updatedAt: true } }),
+    ]);
+    products = res[0];
+    collections = res[1];
+    stories = res[2];
+  } catch (error) {
+    console.warn("Notice: Prisma sitemap prerender used seed fallback:", error);
+    products = seedProducts.map((p) => ({ slug: p.slug, updatedAt: new Date() }));
+    collections = seedCollections.map((c) => ({ slug: c.slug, updatedAt: new Date() }));
+    stories = seedEditorials.map((s) => ({ slug: s.slug, updatedAt: new Date() }));
+  }
 
   const productUrls = products.map((p) => ({
     url: `${baseUrl}/products/${p.slug}`,

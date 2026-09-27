@@ -6,34 +6,71 @@ import { prisma } from "@/lib/prisma";
 import { EditorialHero } from "@/components/hero/EditorialHero";
 import { ProductCarousel } from "@/components/product/ProductCarousel";
 
+import { seedCategories, seedProducts, seedEditorials } from "@/lib/seed-data";
+
 export const revalidate = 60; // ISR 60s
 
 export default async function HomePage() {
-  // Fetch homepage config, new arrivals, bestsellers, categories, and latest editorial
-  const [config, newArrivals, bestsellers, categories, latestStory] = await Promise.all([
-    prisma.homepageConfig.findUnique({ where: { id: "default" } }),
-    prisma.product.findMany({
-      where: { status: "ACTIVE", newArrival: true },
-      include: { images: true, category: true, variants: true },
-      take: 8,
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.product.findMany({
-      where: { status: "ACTIVE", bestseller: true },
-      include: { images: true, category: true, variants: true },
-      take: 8,
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.category.findMany({
-      where: { featured: true },
-      take: 4,
-      orderBy: { order: "asc" },
-    }),
-    prisma.editorial.findFirst({
-      where: { featured: true },
-      orderBy: { publishedAt: "desc" },
-    }),
-  ]);
+  let config: any = null;
+  let newArrivals: any[] = [];
+  let bestsellers: any[] = [];
+  let categories: any[] = [];
+  let latestStory: any = null;
+
+  try {
+    [config, newArrivals, bestsellers, categories, latestStory] = await Promise.all([
+      prisma.homepageConfig.findUnique({ where: { id: "default" } }),
+      prisma.product.findMany({
+        where: { status: "ACTIVE", newArrival: true },
+        include: { images: true, category: true, variants: true },
+        take: 8,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.product.findMany({
+        where: { status: "ACTIVE", bestseller: true },
+        include: { images: true, category: true, variants: true },
+        take: 8,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.category.findMany({
+        where: { featured: true },
+        take: 4,
+        orderBy: { order: "asc" },
+      }),
+      prisma.editorial.findFirst({
+        where: { featured: true },
+        orderBy: { publishedAt: "desc" },
+      }),
+    ]);
+  } catch (error) {
+    console.warn("Notice: Prisma static prerender used seed fallback:", error);
+  }
+
+  // Graceful fallbacks if database was not yet seeded during initial prerender
+  if (!categories || categories.length === 0) {
+    categories = seedCategories.filter((c) => c.featured).slice(0, 4) as any;
+  }
+  if (!latestStory) {
+    latestStory = seedEditorials.find((e) => e.featured) || seedEditorials[0];
+  }
+  if (!newArrivals || newArrivals.length === 0) {
+    newArrivals = seedProducts.filter((p) => p.newArrival).slice(0, 8).map((p, idx) => ({
+      ...p,
+      id: `seed-new-${idx}`,
+      images: p.images.map((img, i) => ({ id: `img-${idx}-${i}`, url: img, isPrimary: i === 0 })),
+      variants: [],
+      category: seedCategories.find((c) => c.slug === p.categorySlug) || null,
+    })) as any;
+  }
+  if (!bestsellers || bestsellers.length === 0) {
+    bestsellers = seedProducts.filter((p) => p.bestseller).slice(0, 8).map((p, idx) => ({
+      ...p,
+      id: `seed-best-${idx}`,
+      images: p.images.map((img, i) => ({ id: `img-${idx}-${i}`, url: img, isPrimary: i === 0 })),
+      variants: [],
+      category: seedCategories.find((c) => c.slug === p.categorySlug) || null,
+    })) as any;
+  }
 
   return (
     <div className="bg-[#09090b] text-[#f4f3ef]">

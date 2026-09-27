@@ -17,7 +17,6 @@
 .env*.local
 .env.development
 .env.test
-.env.production
 
 # Database & SQLite files
 *.db-journal

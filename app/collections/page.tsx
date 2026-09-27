@@ -4,17 +4,35 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+import { seedCollections, seedProducts } from "@/lib/seed-data";
+
 export const revalidate = 60;
 
 export default async function CollectionsPage() {
-  const collections = await prisma.collection.findMany({
-    include: {
-      _count: {
-        select: { products: true },
+  let collections: any[] = [];
+
+  try {
+    collections = await prisma.collection.findMany({
+      include: {
+        _count: {
+          select: { products: true },
+        },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (error) {
+    console.warn("Notice: Prisma collections prerender used seed fallback:", error);
+  }
+
+  if (!collections || collections.length === 0) {
+    collections = seedCollections.map((col, idx) => ({
+      ...col,
+      id: `seed-col-${idx}`,
+      _count: {
+        products: seedProducts.filter((p) => p.collectionSlug === col.slug).length || 6,
+      },
+    }));
+  }
 
   return (
     <div className="bg-[#09090b] text-[#f4f3ef] pt-32 pb-24">

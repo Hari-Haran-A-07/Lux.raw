@@ -5,12 +5,28 @@ import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 
+import { seedEditorials } from "@/lib/seed-data";
+
 export const revalidate = 60;
 
 export default async function JournalPage() {
-  const stories = await prisma.editorial.findMany({
-    orderBy: { publishedAt: "desc" },
-  });
+  let stories: any[] = [];
+
+  try {
+    stories = await prisma.editorial.findMany({
+      orderBy: { publishedAt: "desc" },
+    });
+  } catch (error) {
+    console.warn("Notice: Prisma journal prerender used seed fallback:", error);
+  }
+
+  if (!stories || stories.length === 0) {
+    stories = seedEditorials.map((s, idx) => ({
+      ...s,
+      id: `seed-story-${idx}`,
+      publishedAt: new Date().toISOString(),
+    }));
+  }
 
   const featuredStory = stories.find((s) => s.featured) || stories[0];
   const remainingStories = stories.filter((s) => s.id !== featuredStory?.id);
