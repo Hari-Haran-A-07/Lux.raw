@@ -47,7 +47,17 @@ async function main() {
 
   const adminUser = await prisma.adminUser.create({
     data: {
-      name: "Maison Director",
+      name: "Maison Director (Recovery & Security)",
+      email: "suryaharan786@gmail.com",
+      password: hashedPassword,
+      role: "SUPER_ADMIN",
+    },
+  });
+
+  // Also seed backup admin
+  await prisma.adminUser.create({
+    data: {
+      name: "Maison Admin",
       email: "admin@luxuryraw.com",
       password: hashedPassword,
       role: "SUPER_ADMIN",

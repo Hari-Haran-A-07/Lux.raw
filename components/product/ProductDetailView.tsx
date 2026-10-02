@@ -14,6 +14,11 @@ import {
   ChevronUp,
   Ruler,
   Share2,
+  Mail,
+  Copy,
+  Check,
+  X,
+  Send,
 } from "lucide-react";
 import { Product } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
@@ -36,6 +41,13 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const { showToast, openSizeGuide } = useUI();
 
   const isLiked = isInWishlist(product.id);
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [shareRecipientEmail, setShareRecipientEmail] = useState("");
+  const [shareCustomMessage, setShareCustomMessage] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const companyRecoveryEmail = "suryaharan786@gmail.com";
 
   const images =
     product.images && product.images.length > 0
@@ -82,11 +94,42 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
     showToast(`Added ${product.name} to your bag`);
   };
 
-  const handleShare = () => {
+  const handleCopyLink = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
-      showToast("Link copied to clipboard");
+      setCopied(true);
+      showToast("Creation link copied to clipboard");
+      setTimeout(() => setCopied(false), 3000);
     }
+  };
+
+  const handleOpenShare = () => {
+    setIsShareModalOpen(true);
+  };
+
+  const handleDirectEmailShare = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (typeof window === "undefined") return;
+
+    const pageUrl = window.location.href;
+    const subject = encodeURIComponent(`luxury.Raw Maison Creation — ${product.name}`);
+    const bodyContent = `${shareCustomMessage ? `${shareCustomMessage}\n\n` : ""}I would like to share this piece from luxury.Raw Maison with you:\n\n${product.name}\n${product.subtitle ? `${product.subtitle}\n` : ""}Price: ${formatCurrency(product.price)}\nMaterial: ${product.material}\nOrigin: ${product.origin}\n\nView piece: ${pageUrl}\n\nFor questions or bespoke appointments, contact Maison Concierge & Recovery at ${companyRecoveryEmail}.`;
+
+    const mailtoUrl = `mailto:${encodeURIComponent(shareRecipientEmail)}?subject=${subject}&body=${encodeURIComponent(bodyContent)}`;
+    window.open(mailtoUrl, "_blank");
+    showToast("Mail client initialized");
+    setIsShareModalOpen(false);
+  };
+
+  const handleInquireConcierge = () => {
+    if (typeof window === "undefined") return;
+    const pageUrl = window.location.href;
+    const subject = encodeURIComponent(`Maison Concierge & Recovery Inquiry: ${product.name} (SKU: ${product.sku})`);
+    const bodyContent = `Maison Concierge Advisor,\n\nI am requesting information regarding the ${product.name} (${formatCurrency(product.price)}).\n\nSelected Shade: ${selectedVariant?.color || product.color}\nSelected Proportion: ${selectedSize || "Standard"}\nLink: ${pageUrl}\n\nPlease contact me regarding bespoke order, sizing, or recovery inquiries.`;
+
+    const mailtoUrl = `mailto:${companyRecoveryEmail}?subject=${subject}&body=${encodeURIComponent(bodyContent)}`;
+    window.open(mailtoUrl, "_blank");
+    showToast("Opening email to Maison Recovery Concierge");
   };
 
   return (
@@ -130,7 +173,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <button
-                onClick={handleShare}
+                onClick={handleOpenShare}
                 aria-label="Share product"
                 className="absolute top-4 right-4 p-2.5 rounded-full bg-black/40 backdrop-blur-md text-white hover:text-[#b59a6d] transition-colors"
               >
@@ -274,6 +317,32 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   >
                     <Heart className={`w-5 h-5 ${isLiked ? "fill-[#b59a6d] text-[#b59a6d]" : ""}`} />
                   </button>
+
+                  <button
+                    onClick={handleOpenShare}
+                    aria-label="Share via Email or Link"
+                    className="p-4 border border-[#27272a] text-white hover:text-[#b59a6d] hover:border-[#b59a6d] transition-colors flex items-center justify-center"
+                    title="Mail Share & Direct Concierge"
+                  >
+                    <Share2 className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between text-[11px] text-[#a1a1aa] px-1">
+                  <button
+                    onClick={handleOpenShare}
+                    className="hover:text-[#b59a6d] flex items-center gap-1.5 transition-colors font-editorial-caps text-[10px]"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#b59a6d]" />
+                    <span>MAIL SHARE THIS CREATION</span>
+                  </button>
+
+                  <button
+                    onClick={handleInquireConcierge}
+                    className="hover:text-[#b59a6d] flex items-center gap-1.5 transition-colors font-editorial-caps text-[10px]"
+                  >
+                    <span>CONCIERGE RECOVERY ADVICE</span>
+                  </button>
                 </div>
 
                 <div className="p-3 bg-[#121214] border border-[#27272a]/60 text-xs text-[#a1a1aa] flex items-center gap-3">
@@ -374,6 +443,138 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               subtitle="CURATED COMPANION PIECES"
               products={relatedProducts}
             />
+          </div>
+        )}
+
+        {/* Mail Share & Concierge Modal */}
+        {isShareModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="bg-[#111114] border border-[#27272a] max-w-lg w-full p-6 sm:p-8 space-y-6 text-xs text-[#f4f3ef] relative">
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setIsShareModalOpen(false)}
+                className="absolute top-4 right-4 p-2 text-[#71717a] hover:text-white transition-colors"
+                aria-label="Close share modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Header */}
+              <div className="space-y-1">
+                <span className="text-[10px] font-editorial-caps text-[#b59a6d] tracking-[0.25em]">
+                  MAISON MAIL SHARE & CONCIERGE
+                </span>
+                <h3 className="font-serif text-2xl font-light text-[#f4f3ef]">
+                  Share {product.name}
+                </h3>
+                <p className="text-[11px] text-[#a1a1aa] font-light">
+                  Transmit this sculptural piece via private digital mail, link dispatch, or consult directly with Maison Recovery & Concierge.
+                </p>
+              </div>
+
+              {/* Quick Actions Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 1. Direct Email App */}
+                <button
+                  onClick={handleDirectEmailShare}
+                  className="p-4 bg-[#18181b] border border-[#27272a] hover:border-[#b59a6d] text-left transition-colors group flex flex-col justify-between space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <Mail className="w-4 h-4 text-[#b59a6d]" />
+                    <span className="text-[10px] font-editorial-caps text-[#71717a] group-hover:text-white">OPEN MAIL</span>
+                  </div>
+                  <div>
+                    <strong className="block text-white">Default Mail Client</strong>
+                    <span className="text-[10px] text-[#a1a1aa]">Launch Outlook, Apple Mail, Gmail</span>
+                  </div>
+                </button>
+
+                {/* 2. Inquire with Recovery Concierge */}
+                <button
+                  onClick={handleInquireConcierge}
+                  className="p-4 bg-[#18181b] border border-[#b59a6d]/40 hover:border-[#b59a6d] text-left transition-colors group flex flex-col justify-between space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <Send className="w-4 h-4 text-[#b59a6d]" />
+                    <span className="text-[10px] font-editorial-caps text-[#b59a6d]">CONCIERGE</span>
+                  </div>
+                  <div>
+                    <strong className="block text-white">Maison Recovery Advisor</strong>
+                    <span className="text-[10px] text-[#b59a6d] font-mono">{companyRecoveryEmail}</span>
+                  </div>
+                </button>
+              </div>
+
+              {/* Custom Recipient Mail Form */}
+              <form onSubmit={handleDirectEmailShare} className="space-y-3 pt-2 border-t border-[#27272a]">
+                <div className="space-y-1">
+                  <label className="text-[#a1a1aa] font-editorial-caps text-[10px]">
+                    RECIPIENT EMAIL ADDRESS (OPTIONAL)
+                  </label>
+                  <input
+                    type="email"
+                    value={shareRecipientEmail}
+                    onChange={(e) => setShareRecipientEmail(e.target.value)}
+                    placeholder="patron@domain.com"
+                    className="w-full bg-[#18181b] border border-[#27272a] p-3 text-[#f4f3ef] placeholder-[#52525b] focus:border-[#b59a6d] focus:outline-none text-xs"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[#a1a1aa] font-editorial-caps text-[10px]">
+                    PERSONAL NOTE (OPTIONAL)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={shareCustomMessage}
+                    onChange={(e) => setShareCustomMessage(e.target.value)}
+                    placeholder="Admire this exceptional creation from luxury.Raw Maison..."
+                    className="w-full bg-[#18181b] border border-[#27272a] p-3 text-[#f4f3ef] placeholder-[#52525b] focus:border-[#b59a6d] focus:outline-none text-xs"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#f4f3ef] text-[#09090b] py-3 text-xs font-editorial-caps flex items-center justify-center gap-2 hover:bg-[#b59a6d] transition-colors"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>TRANSMIT MAIL SHARE</span>
+                </button>
+              </form>
+
+              {/* Copy URL Row */}
+              <div className="pt-2 border-t border-[#27272a] flex items-center justify-between gap-2">
+                <div className="bg-[#18181b] border border-[#27272a] px-3 py-2 text-[11px] text-[#71717a] truncate font-mono flex-1">
+                  {typeof window !== "undefined" ? window.location.href : "https://luxuryraw.com/..."}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className="px-4 py-2 bg-[#27272a] hover:bg-[#3f3f46] text-white text-xs font-editorial-caps flex items-center gap-1.5 transition-colors flex-shrink-0"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-[#b59a6d]" />
+                      <span>COPIED</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>COPY LINK</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Footer Company Recovery Note */}
+              <div className="pt-2 text-center text-[10px] text-[#71717a] font-light">
+                <span>Direct inquiries & recovery assistance: </span>
+                <a href={`mailto:${companyRecoveryEmail}`} className="text-[#b59a6d] hover:underline font-mono">
+                  {companyRecoveryEmail}
+                </a>
+              </div>
+            </div>
           </div>
         )}
       </div>

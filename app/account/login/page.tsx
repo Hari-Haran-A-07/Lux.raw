@@ -38,7 +38,7 @@ export default function LoginPage() {
       setEmail("client@luxuryraw.com");
       setPassword("LuxuryRaw@2026");
     } else {
-      setEmail("admin@luxuryraw.com");
+      setEmail("suryaharan786@gmail.com");
       setPassword("LuxuryRaw@2026");
     }
   };
@@ -78,8 +78,8 @@ export default function LoginPage() {
               onClick={() => handleDemoFill("admin")}
               className="p-2 border border-[#27272a] hover:border-[#b59a6d] text-left text-[11px] text-[#d4d4d8] transition-colors"
             >
-              <strong className="block text-white">Maison Admin</strong>
-              admin@luxuryraw.com
+              <strong className="block text-white">Maison Admin / Recovery</strong>
+              suryaharan786@gmail.com
             </button>
           </div>
         </div>

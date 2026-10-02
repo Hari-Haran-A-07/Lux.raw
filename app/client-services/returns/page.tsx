@@ -45,7 +45,7 @@ export default function ReturnsPage() {
           <div className="border-t border-[#27272a] pt-6 space-y-3">
             <h4 className="font-editorial-caps text-xs text-[#b59a6d]">HOW TO INITIATE A RETURN</h4>
             <p>
-              Log in to your <Link href="/account/orders" className="text-[#b59a6d] underline">Client Portal</Link> or contact your dedicated concierge advisor at <strong className="text-white">concierge@luxuryraw.com</strong>. A courier pickup will be scheduled at your residence.
+              Log in to your <Link href="/account/orders" className="text-[#b59a6d] underline">Client Portal</Link> or contact your dedicated concierge and recovery advisor at <a href="mailto:suryaharan786@gmail.com" className="text-white font-medium hover:text-[#b59a6d] underline font-mono">suryaharan786@gmail.com</a>. A courier pickup will be scheduled at your residence.
             </p>
           </div>
         </div>

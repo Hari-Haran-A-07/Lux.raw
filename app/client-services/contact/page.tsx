@@ -49,8 +49,10 @@ export default function ContactPage() {
               <div className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-[#b59a6d] flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-white">Digital Mail</strong>
-                  <span>concierge@luxuryraw.com</span>
+                  <strong className="block text-white">Digital Mail & Company Recovery</strong>
+                  <a href="mailto:suryaharan786@gmail.com" className="text-[#b59a6d] hover:underline font-mono">
+                    suryaharan786@gmail.com
+                  </a>
                 </div>
               </div>
 
@@ -112,6 +114,7 @@ export default function ContactPage() {
                     className="w-full bg-[#18181b] border border-[#27272a] p-3 text-[#f4f3ef] focus:border-[#b59a6d] focus:outline-none"
                   >
                     <option value="Private Client Inquiry">Private Client Inquiry</option>
+                    <option value="Account & Order Recovery / Security">Account & Order Recovery / Security</option>
                     <option value="Made-to-Measure Sizing Advice">Made-to-Measure Sizing Advice</option>
                     <option value="Special Order / Leather Monogramming">Special Order / Leather Monogramming</option>
                     <option value="Atelier Lifetime Care Request">Atelier Lifetime Care Request</option>
