@@ -11,6 +11,7 @@ import { QuickViewModal } from "@/components/product/QuickViewModal";
 import { SizeGuideModal } from "@/components/product/SizeGuideModal";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Toast } from "@/components/ui/Toast";
+import { AudioVisualWidget } from "@/components/polyglot/AudioVisualWidget";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -80,6 +81,7 @@ export default function RootLayout({
           <SizeGuideModal />
           <MobileNav />
           <Toast />
+          <AudioVisualWidget />
         </Providers>
       </body>
     </html>
