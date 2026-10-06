@@ -91,7 +91,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Middle: Links Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-16 border-b border-[#27272a]/70 text-xs">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-16 border-b border-[#27272a]/70 text-xs">
           {/* Col 1 */}
           <div className="space-y-4">
             <h4 className="font-editorial-caps text-[11px] text-[#f4f3ef]">CLIENT CONCIERGE</h4>
@@ -102,23 +102,23 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/client-services/shipping" className="hover:text-[#f4f3ef] transition-colors">
-                  Complimentary White-Glove Shipping
+                <Link href="/vip-salon" className="hover:text-[#b59a6d] transition-colors">
+                  VIP Private Salon Suites
                 </Link>
               </li>
               <li>
-                <Link href="/client-services/returns" className="hover:text-[#f4f3ef] transition-colors">
-                  Exchange & Returns Policy
+                <Link href="/stylist" className="hover:text-[#b59a6d] transition-colors">
+                  AI Haute Couture Stylist
                 </Link>
               </li>
               <li>
-                <Link href="/client-services/care" className="hover:text-[#f4f3ef] transition-colors">
-                  Leather & Cashmere Care
+                <Link href="/passport" className="hover:text-[#b59a6d] transition-colors">
+                  Digital Passport &amp; 3D Fit
                 </Link>
               </li>
               <li>
                 <Link href="/stores" className="hover:text-[#f4f3ef] transition-colors">
-                  Private Salon Appointments
+                  Flagship Boutiques
                 </Link>
               </li>
             </ul>
@@ -130,22 +130,22 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 font-light text-[#71717a]">
               <li>
                 <Link href="/about" className="hover:text-[#f4f3ef] transition-colors">
-                  Our Architectural Philosophy
+                  Architectural Philosophy
+                </Link>
+              </li>
+              <li>
+                <Link href="/archive" className="hover:text-[#b59a6d] transition-colors">
+                  Centennial Heritage Archive
+                </Link>
+              </li>
+              <li>
+                <Link href="/press-club" className="hover:text-[#b59a6d] transition-colors">
+                  VIP Press &amp; Patron Club
                 </Link>
               </li>
               <li>
                 <Link href="/journal" className="hover:text-[#f4f3ef] transition-colors">
-                  Atelier Journal & Chronicles
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#sustainability" className="hover:text-[#f4f3ef] transition-colors">
-                  Vegetable Tanning & Traceability
-                </Link>
-              </li>
-              <li>
-                <Link href="/stores" className="hover:text-[#f4f3ef] transition-colors">
-                  Global Flagship Boutiques
+                  Atelier Journal &amp; Chronicles
                 </Link>
               </li>
             </ul>
@@ -166,13 +166,14 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/collections/autumn-winter-2026" className="hover:text-[#f4f3ef] transition-colors">
-                  Autumn / Winter 2026
+                <Link href="/drops" className="hover:text-[#b59a6d] transition-colors flex items-center gap-1.5">
+                  <span>Live Runway Drops</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                 </Link>
               </li>
               <li>
-                <Link href="/collections/sculptural-monolith" className="hover:text-[#f4f3ef] transition-colors">
-                  Permanent Icons
+                <Link href="/collections/autumn-winter-2026" className="hover:text-[#f4f3ef] transition-colors">
+                  Autumn / Winter 2026
                 </Link>
               </li>
             </ul>
@@ -180,16 +181,43 @@ export const Footer: React.FC = () => {
 
           {/* Col 4 */}
           <div className="space-y-4">
-            <h4 className="font-editorial-caps text-[11px] text-[#f4f3ef]">LEGAL & REPUTATION</h4>
+            <h4 className="font-editorial-caps text-[11px] text-[#f4f3ef]">POLYGLOT MESH</h4>
+            <ul className="space-y-2.5 font-light text-[#71717a]">
+              <li>
+                <Link href="/polyglot" className="hover:text-[#b59a6d] transition-colors font-medium text-[#b59a6d]">
+                  11-Engine Command Center
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/sql-analytics" className="hover:text-[#f4f3ef] transition-colors">
+                  Executive SQL Intelligence
+                </Link>
+              </li>
+              <li>
+                <Link href="/passport" className="hover:text-[#f4f3ef] transition-colors">
+                  Rust SHA-256 Provenance
+                </Link>
+              </li>
+              <li>
+                <Link href="/drops" className="hover:text-[#f4f3ef] transition-colors">
+                  Go Concurrency Drops
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 5 */}
+          <div className="space-y-4">
+            <h4 className="font-editorial-caps text-[11px] text-[#f4f3ef]">LEGAL &amp; REPUTATION</h4>
             <ul className="space-y-2.5 font-light text-[#71717a]">
               <li>
                 <Link href="/legal/privacy" className="hover:text-[#f4f3ef] transition-colors">
-                  Privacy Policy & Cookies
+                  Privacy Policy &amp; Cookies
                 </Link>
               </li>
               <li>
                 <Link href="/legal/terms" className="hover:text-[#f4f3ef] transition-colors">
-                  Terms of Maison Acquisition
+                  Terms of Acquisition
                 </Link>
               </li>
               <li>
