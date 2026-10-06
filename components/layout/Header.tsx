@@ -70,7 +70,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Center: Desktop Navigation Categories */}
-        <nav className="hidden lg:flex items-center space-x-10 text-[12px] font-editorial-caps text-[#f4f3ef] tracking-[0.25em]">
+        <nav className="hidden lg:flex items-center space-x-7 text-[12px] font-editorial-caps text-[#f4f3ef] tracking-[0.22em]">
           <button
             onMouseEnter={() => setActiveMenu("WOMEN")}
             className={`transition-colors py-2 border-b-2 ${
@@ -104,16 +104,39 @@ export const Header: React.FC = () => {
             COLLECTIONS
           </button>
 
-          <button
-            onMouseEnter={() => setActiveMenu("JOURNAL")}
+          <Link
+            href="/stylist"
             className={`transition-colors py-2 border-b-2 ${
-              activeMenu === "JOURNAL" || pathname.startsWith("/journal")
+              pathname.startsWith("/stylist")
                 ? "border-[#b59a6d] text-[#b59a6d]"
                 : "border-transparent hover:text-[#b59a6d]"
             }`}
           >
-            JOURNAL
-          </button>
+            AI STYLIST
+          </Link>
+
+          <Link
+            href="/drops"
+            className={`transition-colors py-2 border-b-2 flex items-center gap-1.5 ${
+              pathname.startsWith("/drops")
+                ? "border-[#b59a6d] text-[#b59a6d]"
+                : "border-transparent hover:text-[#b59a6d]"
+            }`}
+          >
+            <span>LIVE DROPS</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+          </Link>
+
+          <Link
+            href="/polyglot"
+            className={`transition-colors py-2 border-b-2 text-[#b59a6d] flex items-center gap-1 ${
+              pathname.startsWith("/polyglot")
+                ? "border-[#b59a6d] text-white"
+                : "border-transparent hover:text-white"
+            }`}
+          >
+            <span>POLYGLOT</span>
+          </Link>
         </nav>
 
         {/* Right: Actions (Search, Account, Wishlist, Bag) */}
