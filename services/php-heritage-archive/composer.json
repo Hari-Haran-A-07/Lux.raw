@@ -1,0 +1,13 @@
+{
+    "name": "luxraw/heritage-archive",
+    "description": "luxury.Raw Maison Historical Archive, Provenance & Lookbook Dossier Service",
+    "type": "project",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "LuxRaw\\Heritage\\": "src/"
+        }
+    }
+}
