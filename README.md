@@ -32,17 +32,37 @@
 
 ---
 
-## 3. Technology Stack
+## 3. 11-Language Polyglot Architecture Mesh
+
+luxury.Raw is engineered as a massive, polyglot microservice ecosystem integrating **11 programming and query languages**:
+
+| Language | Module Directory | Core Role & Microservice Responsibilities |
+|---|---|---|
+| **TypeScript** | `lib/polyglot/orchestrator.ts` | Next.js 14 App Router, master polyglot orchestrator, type-safe API gateway. |
+| **JavaScript** | `services/javascript-audio-visual/` | Web Audio DSP ambient acoustic synthesis & Brutalist vector particle canvas. |
+| **Java** | `services/java-erp-inventory/` | Java 21 / Spring Boot 3 enterprise inventory ERP, `ReentrantLock` concurrency, double-entry warehouse ledger. |
+| **Go (Golang)** | `services/go-realtime-drops/` | Go 1.22 Goroutines sub-millisecond VIP runway flash drops, live bidding streams, boutique footfall telemetry. |
+| **C#** | `services/csharp-payment-vault/` | C# .NET 8 Core ISO 20022 payment vault, HMAC-SHA256 signature signing, PCI-DSS fraud scoring. |
+| **Python** | `services/python-ai-stylist/` | Python 3.11 / FastAPI AI Haute Couture neural stylist with vector silhouette matching & trend forecasting. |
+| **Rust** | `services/rust-authenticity-engine/` | Rust 2021 Actix zero-cost memory-safe SHA-256 Merkle Provenance digital passports & 3D parametric fit solver. |
+| **Kotlin** | `services/kotlin-vip-concierge/` | Kotlin 1.9 / Ktor Coroutines VIP private salon suite scheduling & master tailor dispatching. |
+| **PHP** | `services/php-heritage-archive/` | PHP 8.3 OPcache JIT centennial Maison archives (1924–2026) & multi-lingual PDF lookbook folio engine. |
+| **Ruby** | `services/ruby-creative-dispatch/` | Ruby 3.3 YJIT / Sinatra creative dispatch wire transmitting encrypted monographs & VIP patron club tiers. |
+| **SQL** | `services/sql-analytics-schema/` | ANSI SQL / PostgreSQL 16 & SQLite analytics with recursive CTE breadcrumbs, window functions, & RFM clustering. |
+
+---
+
+## 4. Technology Stack Summary
 
 | Layer | Technology |
 |---|---|
-| **Framework** | Next.js 14 (App Router with SSR & ISR) |
-| **Language** | TypeScript (Strict mode) |
-| **Frontend & UI** | React 18, Tailwind CSS, Framer Motion, Lucide Icons |
+| **Frontend Framework** | Next.js 14 (App Router with SSR & ISR) |
+| **Languages** | TypeScript, JavaScript, Java, Go, C#, Python, Rust, Kotlin, PHP, Ruby, SQL |
+| **UI & Styling** | React 18, Tailwind CSS, Framer Motion, Lucide Icons, HTML5 Canvas |
 | **Database & ORM** | Prisma ORM with SQLite (Local) / PostgreSQL (Production) |
 | **Authentication** | JWT (jsonwebtoken) & bcryptjs password hashing |
 | **State Management** | React Context & Zustand pattern with LocalStorage persistence |
-| **Typography** | Playfair Display (Serif Display) + Plus Jakarta Sans (Clean UI Sans) |
+| **Audio DSP** | Web Audio API harmonic soundscape generator |
 
 ---
 
