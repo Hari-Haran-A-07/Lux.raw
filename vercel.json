@@ -27,15 +27,18 @@
     },
     "go-realtime-drops": {
       "root": "services/go-realtime-drops",
-      "runtime": "go"
+      "runtime": "go",
+      "entrypoint": "main.go"
     },
     "python-ai-stylist": {
       "root": "services/python-ai-stylist",
-      "framework": "fastapi"
+      "framework": "fastapi",
+      "entrypoint": "main.py"
     },
     "rust-authenticity-engine": {
       "root": "services/rust-authenticity-engine",
-      "runtime": "rust"
+      "runtime": "rust",
+      "entrypoint": "src/main.rs"
     }
   },
   "rewrites": [
