@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/dev.db
+    restart: unless-stopped
+
+  go-drops:
+    build:
+      context: ./services/go-realtime-drops
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+
+  python-stylist:
+    build:
+      context: ./services/python-ai-stylist
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+
+  rust-authenticity:
+    build:
+      context: ./services/rust-authenticity-engine
+    ports:
+      - "8083:8083"
+    restart: unless-stopped
