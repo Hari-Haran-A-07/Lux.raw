@@ -32,7 +32,9 @@ async fn solve_fitting(req: web::Json<BodyMeasurements>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("🦀 [Rust Authenticity Engine] Active on port 8085");
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8085".to_string());
+    let addr = format!("0.0.0.0:{}", port);
+    println!("🦀 [Rust Authenticity Engine] Active on {}", addr);
     HttpServer::new(|| {
         App::new()
             .wrap(Cors::permissive())
@@ -40,7 +42,7 @@ async fn main() -> std::io::Result<()> {
             .service(verify_passport)
             .service(solve_fitting)
     })
-    .bind(("0.0.0.0", 8085))?
+    .bind(&addr)?
     .run()
     .await
 }

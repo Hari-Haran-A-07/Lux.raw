@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/luxraw/go-realtime-drops/auction"
 	"github.com/luxraw/go-realtime-drops/telemetry"
@@ -97,6 +98,11 @@ func main() {
 	http.HandleFunc("/api/v1/drops/bid", bidHandler)
 	http.HandleFunc("/api/v1/drops/telemetry", telemetryHandler)
 
-	fmt.Println("🐹 [Go Drops Engine] luxury.Raw Real-Time Runway Auction Gateway active on port 8082")
-	log.Fatal(http.ListenAndServe(":8082", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8082"
+	}
+
+	fmt.Printf("🐹 [Go Drops Engine] luxury.Raw Real-Time Runway Auction Gateway active on port %s\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

@@ -186,7 +186,9 @@ export class PolyglotMasterOrchestrator {
     const startTime = performance.now();
     // Try external Java service if available, else execute high-speed Java-equivalent model
     try {
-      const response = await fetch("http://localhost:8081/api/v1/erp/allocate", {
+      const baseUrl = process.env.JAVA_ERP_SERVICE_URL || "http://localhost:8081";
+      const targetUrl = new URL("/api/v1/erp/allocate", baseUrl);
+      const response = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderReference, items, destinationRegion: region, clientTier: "VIP" }),
@@ -214,7 +216,9 @@ export class PolyglotMasterOrchestrator {
   public async executeGoAuctionBid(dropId: string, userId: string, userName: string, amount: number) {
     const startTime = performance.now();
     try {
-      const res = await fetch("http://localhost:8082/api/v1/drops/bid", {
+      const baseUrl = process.env.GO_DROPS_SERVICE_URL || process.env.DROPS_SERVICE_URL || "http://localhost:8082";
+      const targetUrl = new URL("/api/v1/drops/bid", baseUrl);
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dropId, userId, userName, amount, vipTier: "BLACK_CARD" }),
@@ -240,7 +244,9 @@ export class PolyglotMasterOrchestrator {
   public async executeCsharpPayment(orderId: string, amount: number, currency: string, email: string, country: string) {
     const startTime = performance.now();
     try {
-      const res = await fetch("http://localhost:8083/api/v1/payments/process", {
+      const baseUrl = process.env.CSHARP_PAYMENT_SERVICE_URL || "http://localhost:8083";
+      const targetUrl = new URL("/api/v1/payments/process", baseUrl);
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderId, amount, currency, clientEmail: email, billingCountry: country, paymentMethod: "CARD" }),
@@ -283,7 +289,9 @@ export class PolyglotMasterOrchestrator {
   public async executePythonStylist(aesthetic: string, occasion: string, budget: string) {
     const startTime = performance.now();
     try {
-      const res = await fetch("http://localhost:8084/api/v1/stylist/curate", {
+      const baseUrl = process.env.PYTHON_STYLIST_SERVICE_URL || process.env.STYLIST_SERVICE_URL || "http://localhost:8084";
+      const targetUrl = new URL("/api/v1/stylist/curate", baseUrl);
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ aesthetic, occasion, budget_range: budget }),
@@ -344,7 +352,9 @@ export class PolyglotMasterOrchestrator {
   public async executeRustPassportVerification(serialNumber: string, atelierCode: string) {
     const startTime = performance.now();
     try {
-      const res = await fetch("http://localhost:8085/api/v1/rust/passport/verify", {
+      const baseUrl = process.env.RUST_AUTHENTICITY_SERVICE_URL || process.env.AUTHENTICITY_SERVICE_URL || "http://localhost:8085";
+      const targetUrl = new URL("/api/v1/rust/passport/verify", baseUrl);
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ serial_number: serialNumber, product_id: "LUX-MONOLITH-01", atelier_code: atelierCode, artisan_id: "ARTISAN-FL-88", crafted_date: "2026-03-15" }),
@@ -375,7 +385,9 @@ export class PolyglotMasterOrchestrator {
   public async executeKotlinSalonBooking(clientName: string, clientEmail: string, city: string, date: string, timeSlot: string) {
     const startTime = performance.now();
     try {
-      const res = await fetch("http://localhost:8086/api/v1/concierge/book", {
+      const baseUrl = process.env.KOTLIN_CONCIERGE_SERVICE_URL || "http://localhost:8086";
+      const targetUrl = new URL("/api/v1/concierge/book", baseUrl);
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ clientName, clientEmail, boutiqueCity: city, preferredDate: date, timeSlot }),

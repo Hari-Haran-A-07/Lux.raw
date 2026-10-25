@@ -1,0 +1,49 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": ".",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "go-realtime-drops",
+          "format": "url",
+          "env": "GO_DROPS_SERVICE_URL"
+        },
+        {
+          "type": "service",
+          "service": "python-ai-stylist",
+          "format": "url",
+          "env": "PYTHON_STYLIST_SERVICE_URL"
+        },
+        {
+          "type": "service",
+          "service": "rust-authenticity-engine",
+          "format": "url",
+          "env": "RUST_AUTHENTICITY_SERVICE_URL"
+        }
+      ]
+    },
+    "go-realtime-drops": {
+      "root": "services/go-realtime-drops",
+      "runtime": "go"
+    },
+    "python-ai-stylist": {
+      "root": "services/python-ai-stylist",
+      "framework": "fastapi"
+    },
+    "rust-authenticity-engine": {
+      "root": "services/rust-authenticity-engine",
+      "runtime": "rust"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "app"
+      }
+    }
+  ]
+}

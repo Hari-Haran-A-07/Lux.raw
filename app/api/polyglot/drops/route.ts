@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { polyglotOrchestrator } from "@/lib/polyglot/orchestrator";
 
 export async function GET() {
+  const baseUrl = process.env.GO_DROPS_SERVICE_URL || process.env.DROPS_SERVICE_URL;
+  if (baseUrl) {
+    try {
+      const res = await fetch(new URL("/api/v1/drops/lots", baseUrl), {
+        signal: AbortSignal.timeout(600)
+      });
+      if (res.ok) {
+        const lots = await res.json();
+        return NextResponse.json({ activeDrops: lots });
+      }
+    } catch {}
+  }
+
   return NextResponse.json({
     activeDrops: [
       {
