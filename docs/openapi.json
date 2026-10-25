@@ -1,0 +1,40 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Lux.raw Polyglot API",
+    "version": "1.1.0",
+    "description": "Enterprise OpenAPI specification for Lux.raw Luxury Maison"
+  },
+  "paths": {
+    "/api/polyglot/mesh-health": {
+      "get": {
+        "summary": "Retrieve status of all 11 polyglot mesh engines",
+        "responses": {
+          "200": {
+            "description": "Unified mesh health report"
+          }
+        }
+      }
+    },
+    "/api/stylist/recommendations": {
+      "post": {
+        "summary": "AI Ensemble Styling recommendations",
+        "responses": {
+          "200": {
+            "description": "Curated styling outfit"
+          }
+        }
+      }
+    },
+    "/api/passport/verify": {
+      "post": {
+        "summary": "Verify physical item cryptographic authenticity",
+        "responses": {
+          "200": {
+            "description": "Verification result"
+          }
+        }
+      }
+    }
+  }
+}
