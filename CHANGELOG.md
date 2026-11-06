@@ -2,6 +2,29 @@
 
 All notable changes to the Lux.raw Luxury Maison platform are documented here.
 
+## [1.2.0] - 2026-11-06
+
+### Bespoke Monogramming & Customization Studio
+- Added `MonogramStudio` interactive hot-stamp foil debossing customizer supporting 24K Gold Leaf, Palladium Silver, Rose Gold, and Blind Deboss.
+- Added `POST /api/monogram/preview` endpoint for real-time SVG vector typography rendering.
+- Added `customizationStore` persistent client state provider for managing custom initials, bespoke tailoring measurements, and gift boxing.
+
+### Luxury Soundscape & Runway Broadcasting
+- Added `AmbientAudioPlayer` floating soundscape synthesizer offering 432Hz/528Hz acoustic frequencies.
+- Added `RunwayLivestreamCard` and `GET /api/runway/livestream` for live Paris Fashion Week broadcast countdowns and front-row VIP reservations.
+- Added `CurrencySelector` multi-currency luxury converter supporting EUR, USD, GBP, JPY, CHF, and AED.
+
+### Polyglot Microservices & Security Enhancements
+- Added Go `HeartbeatMonitor` for live auction WebSocket connection tracking.
+- Added Rust `NfcVerifier` zero-knowledge module for physical luxury garment anti-cloning verification.
+- Added Python `color_harmony` matrix for AI Haute Couture chromatic styling.
+- Added C# `EscrowCalculator` for high-precision bespoke salon escrow settlements.
+- Added cryptographic Certificate of Authenticity generation engine (`lib/provenance.ts`).
+- Added `MaisonTracer` performance span telemetry tracker and automated E2E VIP checkout test suite.
+- Published Maison High-Availability Disaster Recovery & Failover Runbook (`docs/DISASTER_RECOVERY_RUNBOOK.md`).
+
+---
+
 ## [1.1.0] - 2026-10-25
 
 ### Polyglot Architecture & Mesh
